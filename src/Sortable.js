@@ -137,8 +137,7 @@ let dragEl,
 	ghostRelativeParent,
 	ghostRelativeParentInitialScroll = [], // (left, top)
 
-	_silent = false,
-	savedInputChecked = [];
+	_silent = false;
 
 	/** @const */
 	const documentExists = typeof document !== 'undefined',
@@ -470,9 +469,6 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 			target = (touch || evt).target,
 			originalTarget = evt.target.shadowRoot && ((evt.path && evt.path[0]) || (evt.composedPath && evt.composedPath()[0])) || target,
 			filter = options.filter;
-
-		_saveInputCheckedState(el);
-
 
 		// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
 		if (dragEl) {
@@ -1651,11 +1647,6 @@ Sortable.prototype = /** @lends Sortable.prototype */ {
 		Sortable.clone =
 		Sortable.active = null;
 
-		savedInputChecked.forEach(function (el) {
-			el.checked = true;
-		});
-
-		savedInputChecked.length =
 		lastDx =
 		lastDy = 0;
 	},
@@ -2022,18 +2013,6 @@ function _generateId(el) {
 	}
 
 	return sum.toString(36);
-}
-
-function _saveInputCheckedState(root) {
-	savedInputChecked.length = 0;
-
-	let inputs = root.getElementsByTagName('input');
-	let idx = inputs.length;
-
-	while (idx--) {
-		let el = inputs[idx];
-		el.checked && savedInputChecked.push(el);
-	}
 }
 
 function _nextTick(fn) {
